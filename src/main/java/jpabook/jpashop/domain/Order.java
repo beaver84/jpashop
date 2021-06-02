@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "orders")     //ORDER가 예약어여서 테이블 이름을 orders로 함
 @Getter @Setter
 public class Order {
 
