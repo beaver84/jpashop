@@ -5,6 +5,8 @@ import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.repository.*;
+import jpabook.jpashop.repository.order.query.OrderQueryDto;
+import jpabook.jpashop.repository.order.query.OrderQueryRepository;
 import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryDto;
 import jpabook.jpashop.repository.order.simplequery.*;
 import lombok.Data;
@@ -15,19 +17,20 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.List;
 import static java.util.stream.Collectors.toList;
+
 /**
- *
  * xToOne(ManyToOne, OneToOne) 관계 최적화
  * Order
  * Order -> Member
  * Order -> Delivery
- *
  */
 @RestController
 @RequiredArgsConstructor
 public class OrderSimpleApiController {
 
     private final OrderRepository orderRepository;
+    private final OrderQueryRepository orderQueryRepository;
+
     /**
      * V1. 엔티티 직접 노출
      * - Hibernate5Module 모듈 등록, LAZY=null 처리
@@ -63,6 +66,7 @@ public class OrderSimpleApiController {
         private LocalDateTime orderDate; //주문시간
         private OrderStatus orderStatus;
         private Address address;
+
         public SimpleOrderDto(Order order) {
             orderId = order.getId();
             name = order.getMember().getName();
@@ -95,5 +99,9 @@ public class OrderSimpleApiController {
 //    public List<OrderSimpleQueryDto> ordersV4() {
 //        return orderSimpleQueryRepository.findOrderDtos();
 //    }
+    @GetMapping("/api/v4/orders")
+    public List<OrderQueryDto> ordersV4() {
+        return orderQueryRepository.findOrderQueryDtos();
+    }
 
 }
